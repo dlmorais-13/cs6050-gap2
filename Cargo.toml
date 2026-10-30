@@ -1,0 +1,14 @@
+[package]
+name = "gap-2"
+version = "0.1.0"
+edition = "2024"
+
+[[bench]]
+name = "bench"
+harness = false
+
+[dependencies]
+rand = "0.10.3"
+
+[dev-dependencies]
+divan = "0.1.21"
