@@ -1,17 +1,32 @@
+/// Structure that represents each node in a tree.
 #[derive(Debug, Clone)]
 pub struct Node {
+  /// Label of the node.
   pub label: String,
+  /// Index of node's parent. None if the node is the root of the tree.
   pub parent: Option<usize>,
 }
 
+/// Structure that represents a tree.
 #[derive(Debug, Clone)]
 pub struct Tree {
+  /// List of the nodes in the tree.
   pub nodes: Vec<Node>,
+  /// List of the keyroots of the tree.
   pub kr: Vec<usize>,
+  /// List with the leftmost node for each node in the tree.
+  /// The index must match the index in property "nodes".
   pub lm: Vec<usize>,
 }
 
 impl Tree {
+  /// Function to build a new tree.
+  /// 
+  /// This function needs only the list of nodes and will
+  /// calculate the other properties itself.
+  /// 
+  /// The list of nodes do not need to be in any particular order, but
+  /// they will be stored in left-to-right postorder in the tree.
   pub fn new(mut nodes: Vec<Node>) -> Self {
     let mut children = Tree::compute_children(&nodes);
     Tree::sort_by_postorder(&mut nodes, &children);
@@ -22,6 +37,8 @@ impl Tree {
     Self { nodes, kr, lm }
   }
 
+  /// Compute an array with the children for each node, using the same
+  /// index from the node list.
   fn compute_children(nodes: &Vec<Node>) -> Vec<Vec<usize>> {
     let mut children: Vec<Vec<usize>> = vec![vec![]; nodes.len()];
     for (i, n) in nodes.iter().enumerate() {
@@ -32,6 +49,8 @@ impl Tree {
     children
   }
 
+  /// Compute the list with the leftmost node for each node, using the same 
+  /// index from the node list.
   fn compute_leftmost(nodes: &Vec<Node>, children: &Vec<Vec<usize>>) -> Vec<usize> {
     let mut leftmost: Vec<usize> = vec![];
     for (i, _n) in nodes.iter().enumerate() {
@@ -44,6 +63,7 @@ impl Tree {
     leftmost
   }
 
+  /// Compute the keyroots of the tree.
   fn compute_keyroots(nodes: &Vec<Node>, leftmost: &Vec<usize>) -> Vec<usize> {
     let mut keyroots: Vec<usize> = vec![];
     for (i, n) in nodes.iter().enumerate() {
@@ -56,6 +76,7 @@ impl Tree {
     keyroots
   }
 
+  /// Sort the nodes from input by left-to-right postorder.
   fn sort_by_postorder(nodes: &mut Vec<Node>, chidren: &Vec<Vec<usize>>) {
     if nodes.is_empty() {
       return;
@@ -81,6 +102,8 @@ impl Tree {
     *nodes = new_nodes;
   }
 
+  /// Walk through the nodes in left-to-right postorder and find the index for
+  /// each node in this walk order.
   fn postorder_indices(nodes: &Vec<Node>, children: &Vec<Vec<usize>>) -> Vec<usize> {
     let n = nodes.len();
     if n == 0 {

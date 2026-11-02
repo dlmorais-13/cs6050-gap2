@@ -6,6 +6,7 @@ pub mod generator;
 pub mod paper_input;
 pub mod tree;
 
+/// The main function for the Tree Edit Distance algorithm.
 pub fn algo(t1: &Tree, t2: &Tree) -> usize {
   let mut treedist: HashMap<String, usize> = HashMap::new();
   for i in 0..t1.kr.len() {
@@ -13,22 +14,6 @@ pub fn algo(t1: &Tree, t2: &Tree) -> usize {
       calc_treedist(t1, t2, t1.kr[i], t2.kr[j], &mut treedist);
     }
   }
-
-  // Print final matrix.
-  // println!("{:#?}", treedist);
-
-  // let mut sorted_treedist: Vec<_> = treedist.iter().collect();
-  // sorted_treedist.sort_by_key(|a| a.0);
-  // for (key, value) in sorted_treedist {
-  //     println!("{}: {}", key, value);
-  // }
-
-  // for i in 0..t1.nodes.len() {
-  //     for j in 0..t2.nodes.len() {
-  //         print!("{:?} ", treedist.get(&format!("{}-{}", i, j)).unwrap());
-  //     }
-  //     println!("");
-  // }
 
   if treedist.len() > 0 {
     let lrk = format!("{}-{}", t1.nodes.len() - 1, t2.nodes.len() - 1);
@@ -38,6 +23,10 @@ pub fn algo(t1: &Tree, t2: &Tree) -> usize {
   }
 }
 
+/// This function calculates the treedist rooted at i of t1 and j of t2.
+/// The result will be stored at the hashmap treedist.
+/// This function is guaranteed to calculated the treedist of the arguments, but
+/// may also calculate other treedist of intermediate subtrees during its logic.
 fn calc_treedist(t1: &Tree, t2: &Tree, i: usize, j: usize, treedist: &mut HashMap<String, usize>) {
   let mut forestdist: HashMap<String, usize> = HashMap::new();
   // Use 1 and 0 to force empty representation.
@@ -94,10 +83,12 @@ fn calc_treedist(t1: &Tree, t2: &Tree, i: usize, j: usize, treedist: &mut HashMa
   }
 }
 
+/// Helper function to get the previous value of a usize as an option.
 fn prev_usize(v: usize) -> Option<usize> {
   if v > 0 { Some(v - 1) } else { None }
 }
 
+/// Helper function to create keys used in the memoization structures.
 fn key(t1_range: (Option<usize>, Option<usize>), t2_range: (Option<usize>, Option<usize>)) -> String {
   let k1 = if t1_range.0.is_none() || t1_range.1.is_none() {
     String::from("∅")

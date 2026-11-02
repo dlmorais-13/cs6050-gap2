@@ -1,6 +1,7 @@
 use crate::tree::Node;
 use crate::tree::Tree;
 
+/// Creates the trees using the example from the paper.
 pub fn input() -> (Tree, Tree) {
   (tree1(), tree2())
 }
