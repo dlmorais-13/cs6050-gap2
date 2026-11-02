@@ -29,7 +29,7 @@ To run the benchmarks with a specific number of samples per benchmarked function
 DIVAN_SAMPLE_COUNT=10 cargo bench
 ```
 
-To transform the `divan` output to csv, pipe the output to the script `bench2csv.sh` (only works when running for a single algorithm):
+To transform the `divan` output to csv, pipe the output to the script `bench2csv.sh`:
 
 ```bash
 cargo bench | ./bench2csv.sh
